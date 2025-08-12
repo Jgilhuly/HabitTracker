@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "0.2",
+	"bspVersion": "2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/jgilhuly/Documents/dev/iOS/HabitTracker/HabitTracker.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/jgilhuly/Library/Developer/Xcode/DerivedData/HabitTracker-hhrmfcfvwfpptcclzxupbjumfghi",
+	"scheme": "HabitTracker",
+	"kind": "xcode"
+}
