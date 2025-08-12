@@ -23,12 +23,12 @@ class HabitDataManager: ObservableObject {
     // MARK: - Habit CRUD Operations
     
     /// Create a new habit
-    func createHabit(name: String, description: String?, frequency: String, category: HabitCategory?) -> Habit {
+    func createHabit(name: String, description: String?, frequency: String, isActive: Bool, category: HabitCategory?) -> Habit {
         let habit = Habit(context: context)
         habit.name = name
         habit.descriptionText = description
         habit.frequency = frequency
-        habit.isActive = true
+        habit.isActive = isActive
         habit.createdDate = Date()
         habit.category_relationship = category
         
@@ -177,6 +177,38 @@ class HabitDataManager: ObservableObject {
         } catch {
             print("Error checking habit completion: \(error)")
             return false
+        }
+    }
+
+    /// Find the completion for a habit on a specific date, if any
+    func findCompletion(for habit: Habit, on date: Date) -> HabitCompletion? {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+        
+        let request: NSFetchRequest<HabitCompletion> = HabitCompletion.fetchRequest()
+        request.predicate = NSPredicate(format: "habit == %@ AND completionDate >= %@ AND completionDate < %@",
+                                        habit, startOfDay as NSDate, endOfDay as NSDate)
+        request.fetchLimit = 1
+        
+        do {
+            return try context.fetch(request).first
+        } catch {
+            print("Error finding habit completion: \(error)")
+            return nil
+        }
+    }
+
+    /// Set completion state for a habit on a specific date
+    func setCompletion(for habit: Habit, on date: Date, completed: Bool) {
+        if completed {
+            if findCompletion(for: habit, on: date) == nil {
+                _ = createHabitCompletion(for: habit, date: date, notes: nil)
+            }
+        } else {
+            if let completion = findCompletion(for: habit, on: date) {
+                deleteCompletion(completion)
+            }
         }
     }
     

@@ -1,0 +1,9 @@
+---
+description: When working with the Linear MCP
+alwaysApply: false
+---
+All Linear issues should be marked as "In Progress" when you start working on them and "Done" when you are completed with them.
+
+### Workflow Steps:
+1. **Starting Work**: When beginning work on an issue, immediately update its status to "In Progress"
+2. **Completing Work**: When finishing work on an issue, update its status to "Done"
